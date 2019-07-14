@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+    wp_mysql:
+        container_name: wp_mysql
+        image: mysql:5.7
+        ports:
+            - 6000:3306
+        volumes:
+            - ./db-data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        restart: always
+    wp-site:
+        container_name: wp-site 
+        image: denzdacs/wordpress-php7.2-env 
+        ports:
+            - 8001:80
+        volumes:
+            - .:/var/www/site
+        working_dir: /var/www/site
+        depends_on:
+            -   wp_mysql
+        restart: always
+volumes:
+    db-data:
